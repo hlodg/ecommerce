@@ -13,8 +13,14 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:id', (req, res) => {
-
+router.get('/:id', async (req, res) => {
+  try {
+    const catids = await Category.findbyId({});
+    res.status(200).json(catids)
+  } catch (error) {
+    console.log(err)
+    res.status(500).json(err)
+  }
 });
 
 router.post('/', async (req, res) => {
@@ -27,25 +33,36 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', (req, res) => {
   // update a category by its `id` value
-  try {
-    const catID = await Category.update({
-      category_name: req.body.name
+  Category.update(
+    {
+      category_name: req.body.category_name
     },
-    where, {
-      id: req.params.id
+    {
+      where: {
+        id: req.params.id,
+      },
+    }
+  )
+    .then((updatedCategory) => {
+      // Sends the updated category as a json response
+      res.json(updatedCategory);
     })
-    res.status(200).json(catID)
-
-  } catch (error) {
-    res.status(500), json(error)
-  }
+    .catch((err) => res.json(err));
 });
 
 router.delete('/:id', (req, res) => {
   // delete a category by its `id` value
-  
+  Category.destroy({
+    where: {
+      id: req.params.id,
+    },
+  })
+    .then((deletedCat) => {
+      res.json(deletedCat);
+    })
+    .catch((err) => res.json(err));
 });
 
 module.exports = router;
