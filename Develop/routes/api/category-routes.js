@@ -38,7 +38,7 @@ router.put('/:id', (req, res) => {
   Category.update(
     {category_name: req.body.category_name},
     {where: {
-        id: req.params.id,
+        id: req.body.id,
       }})
     .then((updatedCategory) => {
       // Sends the updated category as a json response
@@ -47,11 +47,12 @@ router.put('/:id', (req, res) => {
     .catch((err) => res.json(err));
 });
 
+
 router.delete('/:id', (req, res) => {
   // delete a category by its `id` value
   Category.destroy({
     where: {
-      id: req.params.id,
+      id: req.body.id,
     },
   })
     .then((deletedCat) => {

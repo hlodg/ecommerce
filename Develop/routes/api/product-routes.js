@@ -24,7 +24,7 @@ router.get('/:id', async (req, res) => {
     const productID= await Product.findbyId({});
     res.status(200).json(productID)
   } catch (error) {
-    res.status(500).json(err)
+    res.status(500).json(error)
   }
 });
 
@@ -65,7 +65,7 @@ router.put('/:id', (req, res) => {
   // update product data
   Product.update(req.body, {
     where: {
-      id: req.params.id,
+      id: req.body.id,
     },
   })
     .then((product) => {
