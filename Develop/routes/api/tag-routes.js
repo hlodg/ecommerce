@@ -18,7 +18,7 @@ router.get('/:id', async(req, res) => {
   // find a single tag by its `id`
   // be sure to include its associated Product data
   try {
-    const tagID = await Tag.findbyId({});
+    const tagID = await Tag.findByPk(req.body.id);
     res.status(200).json(tagID)
   } catch (error) {
     console.log(err)
@@ -44,7 +44,7 @@ router.put('/:id', (req, res) => {
     },
     {
       where: {
-        id: req.params.id,
+        id: req.body.id,
       },
     }
   )
@@ -59,7 +59,7 @@ router.delete('/:id', (req, res) => {
   // delete on tag by its `id` value
   Tag.destroy({
     where: {
-      id: req.params.id,
+      id: req.body.id,
     },
   })
     .then((deleteTag) => {
